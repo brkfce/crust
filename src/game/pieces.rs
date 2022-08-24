@@ -2,39 +2,39 @@
 
 pub struct Pieces {
     // pieces are named as [COLOUR][PIECE][STARTING COLUMN]
-    // e.g. the white queen is WQD
-    WRA: Rook,
-    WNB: Knight,
-    WBC: Bishop,
-    WQD: Queen,
-    WKE: King,
-    WBF: Bishop,
-    WNG: Knight,
-    WRH: Rook,
-    WPA: Pawn,
-    WPB: Pawn,
-    WPC: Pawn,
-    WPD: Pawn,
-    WPE: Pawn,
-    WPF: Pawn,
-    WPG: Pawn,
-    WPH: Pawn,
-    BPA: Pawn,
-    BPB: Pawn,
-    BPC: Pawn,
-    BPD: Pawn,
-    BPE: Pawn,
-    BPF: Pawn,
-    BPG: Pawn,
-    BPH: Pawn,
-    BRA: Rook,
-    BNB: Knight,
-    BBC: Bishop,
-    BQD: Queen,
-    BKE: King,
-    BBF: Bishop,
-    BNG: Knight,
-    BRH: Rook,
+    // e.g. the white queen is wqd
+    wra: Rook,
+    wnb: Knight,
+    wbc: Bishop,
+    wqd: Queen,
+    wke: King,
+    wbf: Bishop,
+    wng: Knight,
+    wrh: Rook,
+    wpa: Pawn,
+    wpb: Pawn,
+    wpc: Pawn,
+    wpd: Pawn,
+    wpe: Pawn,
+    wpf: Pawn,
+    wpg: Pawn,
+    wph: Pawn,
+    bpa: Pawn,
+    bpb: Pawn,
+    bpc: Pawn,
+    bpd: Pawn,
+    bpe: Pawn,
+    bpf: Pawn,
+    bpg: Pawn,
+    bph: Pawn,
+    bra: Rook,
+    bnb: Knight,
+    bbc: Bishop,
+    bqd: Queen,
+    bke: King,
+    bbf: Bishop,
+    bng: Knight,
+    brh: Rook,
 }
 
 enum Colour {
@@ -90,200 +90,199 @@ struct Pawn {
 }
 
 pub fn create_pieces() -> Pieces {
-    let WRA = Rook {
+    let wra = Rook {
         colour: Colour::White,
         column: Column::A,
         row: 0,
     };
-    let WNB = Knight {
+    let wnb = Knight {
         colour: Colour::White,
         column: Column::B,
         row: 0,
     };
-    let WBC = Bishop {
+    let wbc = Bishop {
         colour: Colour::White,
         column: Column::C,
         row: 0,
     };
-    let WQD = Queen {
+    let wqd = Queen {
         colour: Colour::White,
         column: Column::D,
         row: 0,
     };
-    let WKE = King {
+    let wke = King {
         colour: Colour::White,
         column: Column::E,
         row: 0,
     };
-    let WBF = Bishop {
+    let wbf = Bishop {
         colour: Colour::White,
         column: Column::F,
         row: 0,
     };
-    let WNG = Knight {
+    let wng = Knight {
         colour: Colour::White,
         column: Column::G,
         row: 0,
     };
-    let WRH = Rook {
+    let wrh = Rook {
         colour: Colour::White,
         column: Column::H,
         row: 0,
     };
-    let WPA = Pawn {
+    let wpa = Pawn {
         colour: Colour::White,
         column: Column::A,
         row: 1,
     };
-    let WPB = Pawn {
+    let wpb = Pawn {
         colour: Colour::White,
         column: Column::B,
         row: 1,
     };
-    let WPC = Pawn {
+    let wpc = Pawn {
         colour: Colour::White,
         column: Column::C,
         row: 1,
     };
-    let WPD = Pawn {
+    let wpd = Pawn {
         colour: Colour::White,
         column: Column::D,
         row: 1,
     };
-    let WPE = Pawn {
+    let wpe = Pawn {
         colour: Colour::White,
         column: Column::E,
         row: 1,
     };
-    let WPF = Pawn {
+    let wpf = Pawn {
         colour: Colour::White,
         column: Column::F,
         row: 1,
     };
-    let WPG = Pawn {
+    let wpg = Pawn {
         colour: Colour::White,
         column: Column::G,
         row: 1,
     };
-    let WPH = Pawn {
+    let wph = Pawn {
         colour: Colour::White,
         column: Column::H,
         row: 1,
     };
-    let BPA = Pawn {
+    let bpa = Pawn {
         colour: Colour::Black,
         column: Column::A,
         row: 6,
     };
-    let BPB = Pawn {
+    let bpb = Pawn {
         colour: Colour::Black,
         column: Column::B,
         row: 6,
     };
-    let BPC = Pawn {
+    let bpc = Pawn {
         colour: Colour::Black,
         column: Column::C,
         row: 6,
     };
-    let BPD = Pawn {
+    let bpd = Pawn {
         colour: Colour::Black,
         column: Column::D,
         row: 6,
     };
-    let BPE = Pawn {
+    let bpe = Pawn {
         colour: Colour::Black,
         column: Column::E,
         row: 6,
     };
-    let BPF = Pawn {
+    let bpf = Pawn {
         colour: Colour::Black,
         column: Column::F,
         row: 6,
     };
-    let BPG = Pawn {
+    let bpg = Pawn {
         colour: Colour::Black,
         column: Column::G,
         row: 6,
     };
-    let BPH = Pawn {
+    let bph = Pawn {
         colour: Colour::Black,
         column: Column::H,
         row: 6,
     };
-    let BRA = Rook {
+    let bra = Rook {
         colour: Colour::Black,
         column: Column::A,
         row: 7,
     };
-    let BNB = Knight {
+    let bnb = Knight {
         colour: Colour::Black,
         column: Column::B,
         row: 7,
     };
-    let BBC = Bishop {
+    let bbc = Bishop {
         colour: Colour::Black,
         column: Column::C,
         row: 7,
     };
-    let BQD = Queen {
+    let bqd = Queen {
         colour: Colour::Black,
         column: Column::D,
         row: 7,
     };
-    let BKE = King {
+    let bke = King {
         colour: Colour::Black,
         column: Column::E,
         row: 7,
     };
-    let BBF = Bishop {
+    let bbf = Bishop {
         colour: Colour::Black,
         column: Column::F,
         row: 7,
     };
-    let BNG = Knight {
+    let bng = Knight {
         colour: Colour::Black,
         column: Column::G,
         row: 7,
     };
-    let BRH = Rook {
+    let brh = Rook {
         colour: Colour::Black,
         column: Column::H,
         row: 7,
     };
 
-    let pieces = Pieces {
-        WRA: WRA,
-        WNB: WNB,
-        WBC: WBC,
-        WQD: WQD,
-        WKE: WKE,
-        WBF: WBF,
-        WNG: WNG,
-        WRH: WRH,
-        WPA: WPA,
-        WPB: WPB,
-        WPC: WPC,
-        WPD: WPD,
-        WPE: WPE,
-        WPF: WPF,
-        WPG: WPG,
-        WPH: WPH,
-        BPA: BPA,
-        BPB: BPB,
-        BPC: BPC,
-        BPD: BPD,
-        BPE: BPE,
-        BPF: BPF,
-        BPG: BPG,
-        BPH: BPH,
-        BRA: BRA,
-        BNB: BNB,
-        BBC: BBC,
-        BQD: BQD,
-        BKE: BKE,
-        BBF: BBF,
-        BNG: BNG,
-        BRH: BRH,
-    };
-    pieces
+    Pieces {
+        wra,
+        wnb,
+        wbc,
+        wqd,
+        wke,
+        wbf,
+        wng,
+        wrh,
+        wpa,
+        wpb,
+        wpc,
+        wpd,
+        wpe,
+        wpf,
+        wpg,
+        wph,
+        bpa,
+        bpb,
+        bpc,
+        bpd,
+        bpe,
+        bpf,
+        bpg,
+        bph,
+        bra,
+        bnb,
+        bbc,
+        bqd,
+        bke,
+        bbf,
+        bng,
+        brh,
+    }
 }

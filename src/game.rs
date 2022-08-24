@@ -10,9 +10,9 @@ pub struct Game {
 pub fn new_game() -> Game {
     let pieces_set = pieces::create_pieces();
     let game_board = board::create_board();
-    let new_game = Game {
+    
+    Game {
         board: game_board,
         pieces: pieces_set,
-    };
-    new_game
+    }
 }
