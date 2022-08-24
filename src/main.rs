@@ -1,4 +1,4 @@
-mod game;
+use crust::game;
 
 fn main() {
     println!("Hello, world!");
