@@ -1,5 +1,7 @@
 use std::vec;
 
+use self::pieces::GenMoves;
+
 #[allow(dead_code)]
 mod pieces;
 
@@ -147,6 +149,7 @@ pub fn remove_piece(board: &mut Board, index: i8) {
             board.white_pawns.remove(temp_vec_pos);
             return;
         }
+        temp_vec_pos += 1;
     }
     temp_vec_pos = 0;
     for pawn in bp_iter {
@@ -154,6 +157,7 @@ pub fn remove_piece(board: &mut Board, index: i8) {
             board.black_pawns.remove(temp_vec_pos);
             return;
         }
+        temp_vec_pos += 1;
     }
     temp_vec_pos = 0;
     for knight in wn_iter {
@@ -161,6 +165,7 @@ pub fn remove_piece(board: &mut Board, index: i8) {
             board.white_knights.remove(temp_vec_pos);
             return;
         }
+        temp_vec_pos += 1;
     }
     temp_vec_pos = 0;
     for knight in bn_iter {
@@ -168,6 +173,7 @@ pub fn remove_piece(board: &mut Board, index: i8) {
             board.black_knights.remove(temp_vec_pos);
             return;
         }
+        temp_vec_pos += 1;
     }
     temp_vec_pos = 0;
     for bishop in wb_iter {
@@ -175,6 +181,7 @@ pub fn remove_piece(board: &mut Board, index: i8) {
             board.white_knights.remove(temp_vec_pos);
             return;
         }
+        temp_vec_pos += 1;
     }
     temp_vec_pos = 0;
     for bishop in bb_iter {
@@ -182,6 +189,7 @@ pub fn remove_piece(board: &mut Board, index: i8) {
             board.black_knights.remove(temp_vec_pos);
             return;
         }
+        temp_vec_pos += 1;
     }
     temp_vec_pos = 0;
     for rook in wr_iter {
@@ -189,6 +197,7 @@ pub fn remove_piece(board: &mut Board, index: i8) {
             board.white_rooks.remove(temp_vec_pos);
             return;
         }
+        temp_vec_pos += 1;
     }
     temp_vec_pos = 0;
     for rook in br_iter {
@@ -196,6 +205,7 @@ pub fn remove_piece(board: &mut Board, index: i8) {
             board.black_rooks.remove(temp_vec_pos);
             return;
         }
+        temp_vec_pos += 1;
     }
     temp_vec_pos = 0;
     for queen in wq_iter {
@@ -203,6 +213,7 @@ pub fn remove_piece(board: &mut Board, index: i8) {
             board.white_queens.remove(temp_vec_pos);
             return;
         }
+        temp_vec_pos += 1;
     }
     temp_vec_pos = 0;
     for queen in bq_iter {
@@ -210,5 +221,83 @@ pub fn remove_piece(board: &mut Board, index: i8) {
             board.black_queens.remove(temp_vec_pos);
             return;
         }
+        temp_vec_pos += 1;
+    }
+}
+
+// generate an array that represents all the squares occupied by white pieces
+fn gen_white_position(board: &Board) -> [bool; 64] {
+    let mut white_positions: [bool; 64] = [false; 64];
+    let wp_iter = board.white_pawns.iter();
+    let wn_iter = board.white_knights.iter();
+    let wb_iter = board.white_bishops.iter();
+    let wr_iter = board.white_rooks.iter();
+    let wq_iter = board.white_queens.iter();
+
+    for pawn in wp_iter {
+        white_positions[pawn.position_index as usize] = true;
+    }
+    for knight in wn_iter {
+        white_positions[knight.position_index as usize] = true;
+    }
+    for bishop in wb_iter {
+        white_positions[bishop.position_index as usize] = true;
+    }
+    for rook in wr_iter {
+        white_positions[rook.position_index as usize] = true;
+    }
+    for queen in wq_iter {
+        white_positions[queen.position_index as usize] = true;
+    }
+    white_positions[board.white_king.position_index as usize] = true;
+
+    white_positions
+}
+
+// generate an array that represents all the squares occupied by black pieces
+fn gen_black_positions(board: &Board) -> [bool; 64] {
+    let mut black_positions: [bool; 64] = [false; 64];
+    let bp_iter = board.black_pawns.iter();
+    let bn_iter = board.black_knights.iter();
+    let bb_iter = board.black_bishops.iter();
+    let br_iter = board.black_rooks.iter();
+    let bq_iter = board.black_queens.iter();
+
+    for pawn in bp_iter {
+        black_positions[pawn.position_index as usize] = true;
+    }
+    for knight in bn_iter {
+        black_positions[knight.position_index as usize] = true;
+    }
+    for bishop in bb_iter {
+        black_positions[bishop.position_index as usize] = true;
+    }
+    for rook in br_iter {
+        black_positions[rook.position_index as usize] = true;
+    }
+    for queen in bq_iter {
+        black_positions[queen.position_index as usize] = true;
+    }
+    black_positions[board.black_king.position_index as usize] = true;
+
+    black_positions
+}
+
+pub fn gen_moves(board: &Board) {
+    let white_positions = gen_white_position(board);
+    let black_positions = gen_black_positions(board);
+    let wp_iter = board.white_pawns.iter();
+    let mut moves_list: Vec<Board> = Vec::new();
+    let mut vec_pos = 0;
+    for pawn in wp_iter {
+        pawn.gen_moves(
+            vec_pos,
+            Colour::White,
+            board,
+            white_positions,
+            black_positions,
+            &mut moves_list,
+        );
+        vec_pos += 1;
     }
 }
