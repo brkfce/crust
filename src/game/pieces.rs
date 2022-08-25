@@ -39,7 +39,7 @@ pub struct Pieces {
 
 enum Colour {
     White = 1,
-    Black = 0,
+    Black = -1,
 }
 
 enum Column {
@@ -62,29 +62,90 @@ enum PieceType {
     King,
 }
 
-enum EnPassant {
+enum Castle {
     None,
     Kingside,
     Queenside,
 }
 
 pub struct Move {
+    // which piece has moved
     piece: PieceType,
+    // the index of the piece before the move
     start_index: i8,
+    // the index of the piece after the move
     end_index: i8,
+    // whether the piece captured another piece
     capture: bool,
-    enpassant: EnPassant,
+    // whether the move was a castle
+    castle: Castle,
+    // whether the move was a pawn moving two spaces forward
     double_pawn: bool,
 }
 
+// note that pl stands for pseudo legal, i.e. a valid movement, but one that may be discounted if it causes check etc
 pub trait Moves {
-    fn move_list(&self, board: &super::board::Board) -> Vec<Move>;
+    fn pl_move_list(&self, board: &super::board::Board) -> Vec<Move>;
 }
 
 struct Rook {
     colour: Colour,
     column: Column,
     row: i8,
+}
+impl Moves for Rook {
+    fn pl_move_list(&self, board: &super::board::Board) -> Vec<Move> {
+        let mut pl_moves = Vec::new();
+        // rooks can move in the 4 cardinal directions
+        fn rook_move(
+            piece: &Rook,
+            board: &super::board::Board,
+            pl_moves: &mut Vec<Move>,
+            // change in the index of the piece for each move
+            index_change: i8,
+            // the index limit for the piece in the direction of motion
+            index_limit: i8,
+        ) {
+            // whether a considered move leads to a capture, to stop looking after
+            let mut capture: bool = false;
+            let mut temp_index = piece.row * 8 + piece.column as i8;
+            // whether the piece has hit the edge of the board
+            while (temp_index + index_change).abs() < index_limit
+				// whether the square is empty or contains an opposing piece
+                && board.squares[(temp_index + index_change) as usize] as i8 * piece.colour as i8
+                    <= 0
+				// whether a capture has already been made, stopping moves in that direction
+                && capture == false
+            {
+                if (board.squares[(temp_index + index_change) as usize] as i8)
+                    * (piece.colour as i8)
+                    < 0
+                {
+                    capture = true;
+                }
+                let pl_move = Move {
+                    piece: PieceType::Rook,
+                    start_index: temp_index,
+                    end_index: temp_index + index_change,
+                    capture: capture,
+                    castle: Castle::None,
+                    double_pawn: false,
+                };
+                if piece.colour as i8 == Colour::White as i8 {
+                    board.white_castle = false;
+                } else {
+                    board.black_castle = false;
+                }
+                temp_index = temp_index + index_change;
+                pl_moves.push(pl_move);
+            }
+        }
+        // moves up
+        rook_move(&self, board, &mut pl_moves, 8, 64 - 8);
+		// moves down
+		rook_move(&self, board, &mut pl_moves, -8, )
+        moves
+    }
 }
 
 struct Knight {
