@@ -16,11 +16,13 @@ enum Turn {
     Black = -1,
 }
 
+#[derive(PartialEq, Eq)]
 pub enum Colour {
     White,
     Black,
 }
 
+#[derive(Clone)]
 pub struct Board {
     white_pawns: Vec<pieces::Pawn>,
     white_knights: Vec<pieces::Knight>,
@@ -40,6 +42,8 @@ pub struct Board {
     white_castle_queenside: bool,
     black_castle_kingside: bool,
     black_castle_queenside: bool,
+    white_check: bool,
+    black_check: bool,
 }
 
 pub fn new_board() -> Board {
@@ -111,5 +115,100 @@ pub fn new_board() -> Board {
         white_castle_queenside: true,
         black_castle_kingside: true,
         black_castle_queenside: true,
+        // true if king is captured
+        white_check: false,
+        black_check: false,
+    }
+}
+
+pub fn remove_piece(board: &mut Board, index: i8) {
+    let wp_iter = board.white_pawns.iter();
+    let wn_iter = board.white_knights.iter();
+    let wb_iter = board.white_bishops.iter();
+    let wr_iter = board.white_rooks.iter();
+    let wq_iter = board.white_queens.iter();
+    if board.white_king.position_index == index {
+        board.white_check = true;
+        return;
+    }
+    let bp_iter = board.black_pawns.iter();
+    let bn_iter = board.black_knights.iter();
+    let bb_iter = board.black_bishops.iter();
+    let br_iter = board.black_rooks.iter();
+    let bq_iter = board.black_queens.iter();
+    if board.black_king.position_index == index {
+        board.black_check = true;
+        return;
+    }
+
+    let mut temp_vec_pos = 0;
+    for pawn in wp_iter {
+        if pawn.position_index == index {
+            board.white_pawns.remove(temp_vec_pos);
+            return;
+        }
+    }
+    temp_vec_pos = 0;
+    for pawn in bp_iter {
+        if pawn.position_index == index {
+            board.black_pawns.remove(temp_vec_pos);
+            return;
+        }
+    }
+    temp_vec_pos = 0;
+    for knight in wn_iter {
+        if knight.position_index == index {
+            board.white_knights.remove(temp_vec_pos);
+            return;
+        }
+    }
+    temp_vec_pos = 0;
+    for knight in bn_iter {
+        if knight.position_index == index {
+            board.black_knights.remove(temp_vec_pos);
+            return;
+        }
+    }
+    temp_vec_pos = 0;
+    for bishop in wb_iter {
+        if bishop.position_index == index {
+            board.white_knights.remove(temp_vec_pos);
+            return;
+        }
+    }
+    temp_vec_pos = 0;
+    for bishop in bb_iter {
+        if bishop.position_index == index {
+            board.black_knights.remove(temp_vec_pos);
+            return;
+        }
+    }
+    temp_vec_pos = 0;
+    for rook in wr_iter {
+        if rook.position_index == index {
+            board.white_rooks.remove(temp_vec_pos);
+            return;
+        }
+    }
+    temp_vec_pos = 0;
+    for rook in br_iter {
+        if rook.position_index == index {
+            board.black_rooks.remove(temp_vec_pos);
+            return;
+        }
+    }
+    temp_vec_pos = 0;
+    for queen in wq_iter {
+        if queen.position_index == index {
+            board.white_queens.remove(temp_vec_pos);
+            return;
+        }
+    }
+    temp_vec_pos = 0;
+    for queen in bq_iter {
+        if queen.position_index == index {
+            board.black_queens.remove(temp_vec_pos);
+            return;
+        }
     }
 }
