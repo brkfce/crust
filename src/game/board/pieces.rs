@@ -7,8 +7,8 @@ pub trait GenMoves {
         vec_pos: usize,
         colour: super::Colour,
         board: &super::Board,
-        white_pieces: [bool; 64],
-        black_pieces: [bool; 64],
+        white_positions: [bool; 64],
+        black_positions: [bool; 64],
         moves_list: &mut Vec<super::Board>,
     );
 }
@@ -23,23 +23,23 @@ impl GenMoves for Pawn {
         vec_pos: usize,
         colour: super::Colour,
         board: &super::Board,
-        white_pieces: [bool; 64],
-        black_pieces: [bool; 64],
+        white_positions: [bool; 64],
+        black_positions: [bool; 64],
         moves_list: &mut Vec<super::Board>,
     ) {
         // pawn moves one square forward
         fn one_forward(
             piece: &Pawn,
-            white_pieces: [bool; 64],
-            black_pieces: [bool; 64],
+            white_positions: [bool; 64],
+            black_positions: [bool; 64],
             white: bool,
             board: &super::Board,
             vec_pos: usize,
             moves_list: &mut Vec<crate::game::board::Board>,
             index_change: i8,
         ) {
-            if white_pieces[(piece.position_index + index_change) as usize] != true
-                && black_pieces[(piece.position_index + index_change) as usize] != true
+            if white_positions[(piece.position_index + index_change) as usize] != true
+                && black_positions[(piece.position_index + index_change) as usize] != true
             {
                 let mut move_board = (*board).clone();
                 if white {
@@ -56,8 +56,8 @@ impl GenMoves for Pawn {
         // pawn moves two squares forward
         fn two_forward(
             piece: &Pawn,
-            white_pieces: [bool; 64],
-            black_pieces: [bool; 64],
+            white_positions: [bool; 64],
+            black_positions: [bool; 64],
             white: bool,
             board: &super::Board,
             vec_pos: usize,
@@ -66,10 +66,10 @@ impl GenMoves for Pawn {
         ) {
             // pawn has to be on starting row and spaces ahead unobstructed
             if ((white && piece.position_index < 16) || (!white && piece.position_index > 47))
-                && white_pieces[(piece.position_index + index_change / 2) as usize] != true
-                && white_pieces[(piece.position_index + index_change) as usize] != true
-                && black_pieces[(piece.position_index + index_change / 2) as usize] != true
-                && black_pieces[(piece.position_index + index_change) as usize] != true
+                && white_positions[(piece.position_index + index_change / 2) as usize] != true
+                && white_positions[(piece.position_index + index_change) as usize] != true
+                && black_positions[(piece.position_index + index_change / 2) as usize] != true
+                && black_positions[(piece.position_index + index_change) as usize] != true
             {
                 let mut move_board = (*board).clone();
                 if white {
@@ -86,22 +86,22 @@ impl GenMoves for Pawn {
         }
         fn capture(
             piece: &Pawn,
-            white_pieces: [bool; 64],
-            black_pieces: [bool; 64],
+            white_positions: [bool; 64],
+            black_positions: [bool; 64],
             white: bool,
             board: &super::Board,
             vec_pos: usize,
             moves_list: &mut Vec<crate::game::board::Board>,
         ) {
             if white {
-                if black_pieces[(piece.position_index + 9) as usize] {
+                if black_positions[(piece.position_index + 9) as usize] {
                     let mut move_board = (*board).clone();
                     move_board.white_pawns[vec_pos].position_index = piece.position_index + 9;
                     super::remove_piece(&mut move_board, piece.position_index + 9);
                     move_board.enpassant = false;
                     moves_list.push(move_board.clone());
                 }
-                if black_pieces[(piece.position_index + 7) as usize] {
+                if black_positions[(piece.position_index + 7) as usize] {
                     let mut move_board = (*board).clone();
                     move_board.white_pawns[vec_pos].position_index = piece.position_index + 7;
                     super::remove_piece(&mut move_board, piece.position_index + 7);
@@ -109,14 +109,14 @@ impl GenMoves for Pawn {
                     moves_list.push(move_board.clone());
                 }
             } else {
-                if white_pieces[(piece.position_index - 9) as usize] {
+                if white_positions[(piece.position_index - 9) as usize] {
                     let mut move_board = (*board).clone();
                     move_board.black_pawns[vec_pos].position_index = piece.position_index - 9;
                     super::remove_piece(&mut move_board, piece.position_index - 9);
                     move_board.enpassant = false;
                     moves_list.push(move_board.clone());
                 }
-                if white_pieces[(piece.position_index - 7) as usize] {
+                if white_positions[(piece.position_index - 7) as usize] {
                     let mut move_board = (*board).clone();
                     move_board.black_pawns[vec_pos].position_index = piece.position_index - 7;
                     super::remove_piece(&mut move_board, piece.position_index - 7);
@@ -128,8 +128,8 @@ impl GenMoves for Pawn {
         if colour == super::Colour::White {
             one_forward(
                 self,
-                white_pieces,
-                black_pieces,
+                white_positions,
+                black_positions,
                 true,
                 board,
                 vec_pos,
@@ -138,8 +138,8 @@ impl GenMoves for Pawn {
             );
             two_forward(
                 self,
-                white_pieces,
-                black_pieces,
+                white_positions,
+                black_positions,
                 true,
                 board,
                 vec_pos,
@@ -148,8 +148,8 @@ impl GenMoves for Pawn {
             );
             capture(
                 self,
-                white_pieces,
-                black_pieces,
+                white_positions,
+                black_positions,
                 true,
                 board,
                 vec_pos,
@@ -158,8 +158,8 @@ impl GenMoves for Pawn {
         } else {
             one_forward(
                 self,
-                white_pieces,
-                black_pieces,
+                white_positions,
+                black_positions,
                 false,
                 board,
                 vec_pos,
@@ -168,8 +168,8 @@ impl GenMoves for Pawn {
             );
             two_forward(
                 self,
-                white_pieces,
-                black_pieces,
+                white_positions,
+                black_positions,
                 false,
                 board,
                 vec_pos,
@@ -178,8 +178,8 @@ impl GenMoves for Pawn {
             );
             capture(
                 self,
-                white_pieces,
-                black_pieces,
+                white_positions,
+                black_positions,
                 false,
                 board,
                 vec_pos,
