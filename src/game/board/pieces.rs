@@ -1,7 +1,13 @@
 #[allow(dead_code)]
 
 pub trait GenMoves {
-    fn gen_moves(&self, colour: super::Colour, board: &super::Board) -> Vec<super::Board>;
+    fn gen_moves(
+        &self,
+        colour: super::Colour,
+        board: &super::Board,
+        white_pieces: [bool; 64],
+        black_pieces: [bool; 64],
+    ) -> Vec<super::Board>;
 }
 
 pub struct Pawn {
