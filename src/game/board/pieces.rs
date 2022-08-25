@@ -164,7 +164,7 @@ impl GenMoves for Pawn {
                 board,
                 vec_pos,
                 moves_list,
-                8,
+                -8,
             );
             two_forward(
                 self,
@@ -174,7 +174,7 @@ impl GenMoves for Pawn {
                 board,
                 vec_pos,
                 moves_list,
-                16,
+                -16,
             );
             capture(
                 self,

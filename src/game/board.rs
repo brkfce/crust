@@ -325,4 +325,23 @@ mod tests {
         assert_eq!(move_one_index, 16);
         assert_eq!(move_two_index, 24);
     }
+    #[test]
+    fn one_black_pawn_moves() {
+        let board = super::new_board();
+        let mut moves_list: Vec<super::Board> = Vec::new();
+        let white_positions = gen_white_position(&board);
+        let black_positions = gen_black_positions(&board);
+        board.black_pawns[0].gen_moves(
+            0,
+            super::Colour::Black,
+            &board,
+            white_positions,
+            black_positions,
+            &mut moves_list,
+        );
+        let move_one_index = moves_list[0].black_pawns[0].position_index;
+        let move_two_index = moves_list[1].black_pawns[0].position_index;
+        assert_eq!(move_one_index, 40);
+        assert_eq!(move_two_index, 32);
+    }
 }
