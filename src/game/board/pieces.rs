@@ -1,22 +1,26 @@
 #[allow(dead_code)]
 
+pub trait GenMoves {
+    fn gen_moves(&self, colour: super::Colour, board: &super::Board) -> Vec<super::Board>;
+}
+
 pub struct Pawn {
-    position_index: i8,
+    pub position_index: i8,
 }
 pub struct Knight {
-    position_index: i8,
+    pub position_index: i8,
 }
 pub struct Bishop {
-    position_index: i8,
+    pub position_index: i8,
 }
 pub struct Rook {
-    position_index: i8,
+    pub position_index: i8,
     // for determining which side castling is still available
-    kingside: bool,
+    pub kingside: bool,
 }
 pub struct Queen {
-    position_index: i8,
+    pub position_index: i8,
 }
 pub struct King {
-    position_index: i8,
+    pub position_index: i8,
 }
