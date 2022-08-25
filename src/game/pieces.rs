@@ -53,6 +53,34 @@ enum Column {
     H = 7,
 }
 
+enum PieceType {
+    Pawn,
+    Knight,
+    Bishop,
+    Rook,
+    Queen,
+    King,
+}
+
+enum EnPassant {
+    None,
+    Kingside,
+    Queenside,
+}
+
+pub struct Move {
+    piece: PieceType,
+    start_index: i8,
+    end_index: i8,
+    capture: bool,
+    enpassant: EnPassant,
+    double_pawn: bool,
+}
+
+pub trait Moves {
+    fn move_list(&self, board: &super::board::Board) -> Vec<Move>;
+}
+
 struct Rook {
     colour: Colour,
     column: Column,
