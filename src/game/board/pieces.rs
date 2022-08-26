@@ -17,12 +17,40 @@ pub trait GenMoves {
 pub struct Pawn {
     pub position_index: i8,
 }
+
+#[derive(Clone)]
+pub struct Knight {
+    pub position_index: i8,
+}
+
+#[derive(Clone)]
+pub struct Bishop {
+    pub position_index: i8,
+}
+
+#[derive(Clone)]
+pub struct Rook {
+    pub position_index: i8,
+    // for determining which side castling is still available
+    pub kingside: bool,
+}
+
+#[derive(Clone)]
+pub struct Queen {
+    pub position_index: i8,
+}
+
+#[derive(Clone)]
+pub struct King {
+    pub position_index: i8,
+}
+
 impl GenMoves for Pawn {
     fn gen_moves(
         &self,
         vec_pos: usize,
-        colour: super::Colour,
-        board: &super::Board,
+        colour: crate::game::board::Colour,
+        board: &crate::game::board::Board,
         white_positions: [bool; 64],
         black_positions: [bool; 64],
         moves_list: &mut Vec<super::Board>,
@@ -33,7 +61,7 @@ impl GenMoves for Pawn {
             white_positions: [bool; 64],
             black_positions: [bool; 64],
             white: bool,
-            board: &super::Board,
+            board: &crate::game::board::Board,
             vec_pos: usize,
             moves_list: &mut Vec<crate::game::board::Board>,
             index_change: i8,
@@ -59,7 +87,7 @@ impl GenMoves for Pawn {
             white_positions: [bool; 64],
             black_positions: [bool; 64],
             white: bool,
-            board: &super::Board,
+            board: &crate::game::board::Board,
             vec_pos: usize,
             moves_list: &mut Vec<crate::game::board::Board>,
             index_change: i8,
@@ -81,6 +109,7 @@ impl GenMoves for Pawn {
                 }
                 // so an enpassant could occur on the next turn
                 move_board.enpassant = true;
+                move_board.enpassant_index = piece.position_index + index_change / 2;
                 moves_list.push(move_board.clone());
             }
         }
@@ -89,7 +118,7 @@ impl GenMoves for Pawn {
             white_positions: [bool; 64],
             black_positions: [bool; 64],
             white: bool,
-            board: &super::Board,
+            board: &crate::game::board::Board,
             vec_pos: usize,
             moves_list: &mut Vec<crate::game::board::Board>,
         ) {
@@ -125,6 +154,45 @@ impl GenMoves for Pawn {
                 }
             }
         }
+        fn enpassant(
+            piece: &Pawn,
+            white: bool,
+            board: &crate::game::board::Board,
+            vec_pos: usize,
+            moves_list: &mut Vec<crate::game::board::Board>,
+        ) {
+            if board.enpassant {
+                if white {
+                    if board.enpassant_index == piece.position_index + 9 {
+                        let mut move_board = (*board).clone();
+                        move_board.white_pawns[vec_pos].position_index = piece.position_index + 9;
+                        super::remove_piece(&mut move_board, board.enpassant_index - 8);
+                        move_board.enpassant = false;
+                        moves_list.push(move_board.clone());
+                    } else if board.enpassant_index == piece.position_index + 7 {
+                        let mut move_board = (*board).clone();
+                        move_board.white_pawns[vec_pos].position_index = piece.position_index + 7;
+                        super::remove_piece(&mut move_board, board.enpassant_index - 8);
+                        move_board.enpassant = false;
+                        moves_list.push(move_board.clone());
+                    }
+                } else {
+                    if board.enpassant_index == piece.position_index - 9 {
+                        let mut move_board = (*board).clone();
+                        move_board.black_pawns[vec_pos].position_index = piece.position_index - 9;
+                        super::remove_piece(&mut move_board, board.enpassant_index + 8);
+                        move_board.enpassant = false;
+                        moves_list.push(move_board.clone());
+                    } else if board.enpassant_index == piece.position_index - 7 {
+                        let mut move_board = (*board).clone();
+                        move_board.white_pawns[vec_pos].position_index = piece.position_index - 7;
+                        super::remove_piece(&mut move_board, board.enpassant_index + 8);
+                        move_board.enpassant = false;
+                        moves_list.push(move_board.clone());
+                    }
+                }
+            }
+        }
         if colour == super::Colour::White {
             one_forward(
                 self,
@@ -155,6 +223,7 @@ impl GenMoves for Pawn {
                 vec_pos,
                 moves_list,
             );
+            enpassant(self, true, board, vec_pos, moves_list);
         } else {
             one_forward(
                 self,
@@ -185,33 +254,7 @@ impl GenMoves for Pawn {
                 vec_pos,
                 moves_list,
             );
+            enpassant(self, true, board, vec_pos, moves_list);
         }
     }
-}
-
-#[derive(Clone)]
-pub struct Knight {
-    pub position_index: i8,
-}
-
-#[derive(Clone)]
-pub struct Bishop {
-    pub position_index: i8,
-}
-
-#[derive(Clone)]
-pub struct Rook {
-    pub position_index: i8,
-    // for determining which side castling is still available
-    pub kingside: bool,
-}
-
-#[derive(Clone)]
-pub struct Queen {
-    pub position_index: i8,
-}
-
-#[derive(Clone)]
-pub struct King {
-    pub position_index: i8,
 }
