@@ -40,6 +40,7 @@ pub struct Board {
     black_king: pieces::King,
     move_count: i32,
     enpassant: bool,
+    enpassant_index: i8,
     white_castle_kingside: bool,
     white_castle_queenside: bool,
     black_castle_kingside: bool,
@@ -112,6 +113,7 @@ pub fn new_board() -> Board {
         black_king: pieces::King { position_index: 61 },
         move_count: 0,
         enpassant: false,
+        enpassant_index: 64,
         // true if castling is still possible i.e. the rook and king have not moved
         white_castle_kingside: true,
         white_castle_queenside: true,
