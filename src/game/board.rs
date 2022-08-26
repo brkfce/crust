@@ -326,6 +326,7 @@ mod tests {
         let move_two_index = moves_list[1].white_pawns[0].position_index;
         assert_eq!(move_one_index, 16);
         assert_eq!(move_two_index, 24);
+        assert_eq!(moves_list[1].enpassant_index, 16);
     }
     #[test]
     fn one_black_pawn_moves() {
@@ -345,5 +346,6 @@ mod tests {
         let move_two_index = moves_list[1].black_pawns[0].position_index;
         assert_eq!(move_one_index, 40);
         assert_eq!(move_two_index, 32);
+        assert_eq!(moves_list[1].enpassant_index, 40);
     }
 }
