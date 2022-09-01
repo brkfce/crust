@@ -348,4 +348,53 @@ mod tests {
         assert_eq!(move_two_index, 32);
         assert_eq!(moves_list[1].enpassant_index, 40);
     }
+    #[test]
+    fn knight_initial_moves() {
+        let board = super::new_board();
+        let mut moves_list: Vec<super::Board> = Vec::new();
+        let white_positions = gen_white_position(&board);
+        let black_positions = gen_black_positions(&board);
+        let white_knights = board.white_knights.iter();
+        let mut counter = 0;
+        for knight in white_knights {
+            knight.gen_moves(
+                counter,
+                super::Colour::White,
+                &board,
+                white_positions,
+                black_positions,
+                &mut moves_list,
+            );
+            counter += 1;
+        }
+        let black_knights = board.black_knights.iter();
+        counter = 0;
+        for knight in black_knights {
+            knight.gen_moves(
+                counter,
+                super::Colour::Black,
+                &board,
+                white_positions,
+                black_positions,
+                &mut moves_list,
+            );
+        }
+        assert_eq!(moves_list.len(), 8);
+        assert_eq!(moves_list[0].white_knights[0].position_index, 18);
+        assert_eq!(moves_list[1].white_knights[0].position_index, 17);
+        assert_eq!(moves_list[2].white_knights[1].position_index, 23);
+        assert_eq!(moves_list[3].white_knights[1].position_index, 21);
+        assert_eq!(moves_list[4].black_knights[0].position_index, 42);
+        assert_eq!(moves_list[5].black_knights[0].position_index, 40);
+        assert_eq!(moves_list[6].black_knights[1].position_index, 47);
+        assert_eq!(moves_list[7].black_knights[1].position_index, 45);
+        assert_eq!(moves_list[0].white_knights[1].position_index, 6);
+        assert_eq!(moves_list[1].white_knights[1].position_index, 6);
+        assert_eq!(moves_list[2].white_knights[0].position_index, 1);
+        assert_eq!(moves_list[3].white_knights[0].position_index, 1);
+        assert_eq!(moves_list[4].black_knights[1].position_index, 62);
+        assert_eq!(moves_list[5].black_knights[1].position_index, 62);
+        assert_eq!(moves_list[6].black_knights[0].position_index, 57);
+        assert_eq!(moves_list[7].black_knights[0].position_index, 57);
+    }
 }
