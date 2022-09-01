@@ -125,30 +125,30 @@ impl GenMoves for Pawn {
             if white {
                 if black_positions[(piece.position_index + 9) as usize] {
                     let mut move_board = (*board).clone();
-                    move_board.white_pawns[vec_pos].position_index = piece.position_index + 9;
                     super::remove_piece(&mut move_board, piece.position_index + 9);
+                    move_board.white_pawns[vec_pos].position_index = piece.position_index + 9;
                     move_board.enpassant = false;
                     moves_list.push(move_board.clone());
                 }
                 if black_positions[(piece.position_index + 7) as usize] {
                     let mut move_board = (*board).clone();
-                    move_board.white_pawns[vec_pos].position_index = piece.position_index + 7;
                     super::remove_piece(&mut move_board, piece.position_index + 7);
+                    move_board.white_pawns[vec_pos].position_index = piece.position_index + 7;
                     move_board.enpassant = false;
                     moves_list.push(move_board.clone());
                 }
             } else {
                 if white_positions[(piece.position_index - 9) as usize] {
                     let mut move_board = (*board).clone();
-                    move_board.black_pawns[vec_pos].position_index = piece.position_index - 9;
                     super::remove_piece(&mut move_board, piece.position_index - 9);
+                    move_board.black_pawns[vec_pos].position_index = piece.position_index - 9;
                     move_board.enpassant = false;
                     moves_list.push(move_board.clone());
                 }
                 if white_positions[(piece.position_index - 7) as usize] {
                     let mut move_board = (*board).clone();
-                    move_board.black_pawns[vec_pos].position_index = piece.position_index - 7;
                     super::remove_piece(&mut move_board, piece.position_index - 7);
+                    move_board.black_pawns[vec_pos].position_index = piece.position_index - 7;
                     move_board.enpassant = false;
                     moves_list.push(move_board.clone());
                 }
@@ -165,28 +165,28 @@ impl GenMoves for Pawn {
                 if white {
                     if board.enpassant_index == piece.position_index + 9 {
                         let mut move_board = (*board).clone();
-                        move_board.white_pawns[vec_pos].position_index = piece.position_index + 9;
                         super::remove_piece(&mut move_board, board.enpassant_index - 8);
+                        move_board.white_pawns[vec_pos].position_index = piece.position_index + 9;
                         move_board.enpassant = false;
                         moves_list.push(move_board.clone());
                     } else if board.enpassant_index == piece.position_index + 7 {
                         let mut move_board = (*board).clone();
-                        move_board.white_pawns[vec_pos].position_index = piece.position_index + 7;
                         super::remove_piece(&mut move_board, board.enpassant_index - 8);
+                        move_board.white_pawns[vec_pos].position_index = piece.position_index + 7;
                         move_board.enpassant = false;
                         moves_list.push(move_board.clone());
                     }
                 } else {
                     if board.enpassant_index == piece.position_index - 9 {
                         let mut move_board = (*board).clone();
-                        move_board.black_pawns[vec_pos].position_index = piece.position_index - 9;
                         super::remove_piece(&mut move_board, board.enpassant_index + 8);
+                        move_board.black_pawns[vec_pos].position_index = piece.position_index - 9;
                         move_board.enpassant = false;
                         moves_list.push(move_board.clone());
                     } else if board.enpassant_index == piece.position_index - 7 {
                         let mut move_board = (*board).clone();
-                        move_board.white_pawns[vec_pos].position_index = piece.position_index - 7;
                         super::remove_piece(&mut move_board, board.enpassant_index + 8);
+                        move_board.white_pawns[vec_pos].position_index = piece.position_index - 7;
                         move_board.enpassant = false;
                         moves_list.push(move_board.clone());
                     }
