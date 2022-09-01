@@ -258,3 +258,161 @@ impl GenMoves for Pawn {
         }
     }
 }
+
+impl GenMoves for Knight {
+    fn gen_moves(
+        &self,
+        vec_pos: usize,
+        colour: crate::game::board::Colour,
+        board: &crate::game::board::Board,
+        white_positions: [bool; 64],
+        black_positions: [bool; 64],
+        moves_list: &mut Vec<super::Board>,
+    ) {
+        fn knight_move(
+            piece: &Knight,
+            index_change: i8,
+            white_positions: [bool; 64],
+            black_positions: [bool; 64],
+            white: bool,
+            board: &crate::game::board::Board,
+            vec_pos: usize,
+            moves_list: &mut Vec<crate::game::board::Board>,
+        ) {
+            let moved_position = (piece.position_index + index_change) as usize;
+            if white {
+                if !white_positions[moved_position] && !black_positions[moved_position] {
+                    let mut move_board = (*board).clone();
+                    move_board.white_knights[vec_pos].position_index = moved_position as i8;
+                    move_board.enpassant = false;
+                    moves_list.push(move_board);
+                }
+                if !white_positions[moved_position] && black_positions[moved_position] {
+                    let mut move_board = (*board).clone();
+                    super::remove_piece(&mut move_board, moved_position as i8);
+                    move_board.white_knights[vec_pos].position_index = moved_position as i8;
+                    move_board.enpassant = false;
+                    moves_list.push(move_board);
+                }
+            } else {
+                if !white_positions[moved_position] && !black_positions[moved_position] {
+                    let mut move_board = (*board).clone();
+                    move_board.black_knights[vec_pos].position_index = moved_position as i8;
+                    move_board.enpassant = false;
+                    moves_list.push(move_board);
+                }
+                if !white_positions[moved_position] && black_positions[moved_position] {
+                    let mut move_board = (*board).clone();
+                    super::remove_piece(&mut move_board, moved_position as i8);
+                    move_board.black_knights[vec_pos].position_index = moved_position as i8;
+                    move_board.enpassant = false;
+                    moves_list.push(move_board);
+                }
+            }
+        }
+        // up two, right one
+        if self.position_index % 8 < 7 && self.position_index < 48 {
+            knight_move(
+                &self,
+                8 + 8 + 1,
+                white_positions,
+                black_positions,
+                colour == super::Colour::White,
+                board,
+                vec_pos,
+                moves_list,
+            );
+        }
+        // up two, left one
+        if self.position_index % 8 > 0 && self.position_index < 48 {
+            knight_move(
+                &self,
+                8 * 2 - 1,
+                white_positions,
+                black_positions,
+                colour == super::Colour::White,
+                board,
+                vec_pos,
+                moves_list,
+            );
+        }
+        // right two, up one
+        if self.position_index % 8 < 6 && self.position_index < 56 {
+            knight_move(
+                &self,
+                8 + 2,
+                white_positions,
+                black_positions,
+                colour == super::Colour::White,
+                board,
+                vec_pos,
+                moves_list,
+            );
+        }
+        // right two, down one
+        if self.position_index % 8 < 6 && self.position_index > 7 {
+            knight_move(
+                &self,
+                -8 + 2,
+                white_positions,
+                black_positions,
+                colour == super::Colour::White,
+                board,
+                vec_pos,
+                moves_list,
+            );
+        }
+        // down two, right one
+        if self.position_index % 8 < 7 && self.position_index > 15 {
+            knight_move(
+                &self,
+                -(8 * 2) + 1,
+                white_positions,
+                black_positions,
+                colour == super::Colour::White,
+                board,
+                vec_pos,
+                moves_list,
+            );
+        }
+        // down two, left one
+        if self.position_index % 8 > 0 && self.position_index > 15 {
+            knight_move(
+                &self,
+                -(8 * 2) - 1,
+                white_positions,
+                black_positions,
+                colour == super::Colour::White,
+                board,
+                vec_pos,
+                moves_list,
+            );
+        }
+        // left two, down one
+        if self.position_index % 8 > 1 && self.position_index > 7 {
+            knight_move(
+                &self,
+                -8 - 2,
+                white_positions,
+                black_positions,
+                colour == super::Colour::White,
+                board,
+                vec_pos,
+                moves_list,
+            );
+        }
+        // left two, up one
+        if self.position_index % 8 > 1 && self.position_index < 56 {
+            knight_move(
+                &self,
+                8 - 2,
+                white_positions,
+                black_positions,
+                colour == super::Colour::White,
+                board,
+                vec_pos,
+                moves_list,
+            );
+        }
+    }
+}
