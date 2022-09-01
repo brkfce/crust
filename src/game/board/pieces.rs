@@ -301,7 +301,7 @@ impl GenMoves for Knight {
                     move_board.enpassant = false;
                     moves_list.push(move_board);
                 }
-                if !white_positions[moved_position] && black_positions[moved_position] {
+                if white_positions[moved_position] && !black_positions[moved_position] {
                     let mut move_board = (*board).clone();
                     super::remove_piece(&mut move_board, moved_position as i8);
                     move_board.black_knights[vec_pos].position_index = moved_position as i8;

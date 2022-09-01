@@ -378,10 +378,11 @@ mod tests {
                 black_positions,
                 &mut moves_list,
             );
+            counter += 1;
         }
         assert_eq!(moves_list.len(), 8);
         assert_eq!(moves_list[0].white_knights[0].position_index, 18);
-        assert_eq!(moves_list[1].white_knights[0].position_index, 17);
+        assert_eq!(moves_list[1].white_knights[0].position_index, 16);
         assert_eq!(moves_list[2].white_knights[1].position_index, 23);
         assert_eq!(moves_list[3].white_knights[1].position_index, 21);
         assert_eq!(moves_list[4].black_knights[0].position_index, 42);
