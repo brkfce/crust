@@ -281,12 +281,14 @@ impl GenMoves for Knight {
         ) {
             let moved_position = (piece.position_index + index_change) as usize;
             if white {
+                // white piece moving to an empty space
                 if !white_positions[moved_position] && !black_positions[moved_position] {
                     let mut move_board = (*board).clone();
                     move_board.white_knights[vec_pos].position_index = moved_position as i8;
                     move_board.enpassant = false;
                     moves_list.push(move_board);
                 }
+                // white piece capturing a black piece
                 if !white_positions[moved_position] && black_positions[moved_position] {
                     let mut move_board = (*board).clone();
                     super::remove_piece(&mut move_board, moved_position as i8);
@@ -295,12 +297,14 @@ impl GenMoves for Knight {
                     moves_list.push(move_board);
                 }
             } else {
+                // black piece moving toa an empty space
                 if !white_positions[moved_position] && !black_positions[moved_position] {
                     let mut move_board = (*board).clone();
                     move_board.black_knights[vec_pos].position_index = moved_position as i8;
                     move_board.enpassant = false;
                     moves_list.push(move_board);
                 }
+                // black piece capturing a white piece
                 if white_positions[moved_position] && !black_positions[moved_position] {
                     let mut move_board = (*board).clone();
                     super::remove_piece(&mut move_board, moved_position as i8);
@@ -413,6 +417,81 @@ impl GenMoves for Knight {
                 vec_pos,
                 moves_list,
             );
+        }
+    }
+}
+
+impl GenMoves for Bishop {
+    fn gen_moves(
+        &self,
+        vec_pos: usize,
+        colour: super::Colour,
+        board: &super::Board,
+        white_positions: [bool; 64],
+        black_positions: [bool; 64],
+        moves_list: &mut Vec<super::Board>,
+    ) {
+        // check each bishop move for capture or block
+        // then generate a new board for the new position after that move
+        // returning false for no capture/block, so the move gen can continue in that direction
+        fn bishop_move(
+            piece: &Bishop,
+            index_change: i8,
+            white_positions: [bool; 64],
+            black_positions: [bool; 64],
+            white: bool,
+            board: &crate::game::board::Board,
+            vec_pos: usize,
+            moves_list: &mut Vec<crate::game::board::Board>,
+        ) -> bool {
+            let moved_position = (piece.position_index + index_change) as usize;
+            if white {
+                // white piece moving to square with no other pieces
+                if !white_positions[moved_position] && !black_positions[moved_position] {
+                    let mut move_board = (*board).clone();
+                    move_board.white_bishops[vec_pos].position_index = moved_position as i8;
+                    move_board.enpassant = false;
+                    moves_list.push(move_board);
+                    // return that no capture or block occured
+                    false
+                }
+                // white piece capturing a black piece
+                else if !white_positions[moved_position] && black_positions[moved_position] {
+                    let mut move_board = (*board).clone();
+                    super::remove_piece(&mut move_board, moved_position as i8);
+                    move_board.white_bishops[vec_pos].position_index = moved_position as i8;
+                    move_board.enpassant = false;
+                    moves_list.push(move_board);
+                    // return that a capture occured
+                    true
+                } else {
+                    // return that a block occured
+                    true
+                }
+            } else {
+                // black piece moving to a square with no other pieces
+                if !white_positions[moved_position] && !black_positions[moved_position] {
+                    let mut move_board = (*board).clone();
+                    move_board.black_bishops[vec_pos].position_index = moved_position as i8;
+                    move_board.enpassant = false;
+                    moves_list.push(move_board);
+                    // return that no capture or block occured
+                    false
+                }
+                // black piece capturing a white piece
+                else if white_positions[moved_position] && !black_positions[moved_position] {
+                    let mut move_board = (*board).clone();
+                    super::remove_piece(&mut move_board, moved_position as i8);
+                    move_board.black_bishops[vec_pos].position_index = moved_position as i8;
+                    move_board.enpassant = false;
+                    moves_list.push(move_board);
+                    // return that a capture occured
+                    true
+                } else {
+                    // return that a block occured
+                    true
+                }
+            }
         }
     }
 }
